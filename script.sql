@@ -1,13 +1,21 @@
 /* =====================================================================
-  Gestión de Inventarios - Script de creación inicial (PostgreSQL)
+   Gestión de Inventarios - Script de creación inicial (PostgreSQL)
 
-   Crea las tablas Products y Transactions con datos de ejemplo.
-   Se puede ejecutar varias veces sin duplicar nada.
+   Crea las tablas "Products" y "Transactions" e inserta datos de ejemplo.
+   Se puede ejecutar varias veces sin duplicar datos.
 
-   La base de datos hay que crearla antes.
+   La base de datos debe existir antes de ejecutarlo (PostgreSQL no tiene
+   CREATE DATABASE IF NOT EXISTS). Ejemplo:
+       createdb -U postgres inventario
+       psql -U postgres -d inventario -f script.sql
 
    Cada microservicio usa solo su tabla (ProductService -> Products,
-   TransactionService -> Transactions).
+   TransactionService -> Transactions). No hay clave foránea entre ambas
+   para que los servicios no dependan uno del otro; TransactionService
+   valida el producto por API REST.
+
+   Las fechas se guardan en UTC. Los identificadores van entre comillas
+   dobles, así que al consultar con psql hay que respetarlas.
    ===================================================================== */
 
 -- Products (ProductService)
