@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS "Products" (
     "ImageUrl"    VARCHAR(500),
     "Price"       NUMERIC(18,2)  NOT NULL,
     "Stock"       INT            NOT NULL,
-    "CreatedAt"   TIMESTAMP      NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
-    "UpdatedAt"   TIMESTAMP,
+    "CreatedAt"   TIMESTAMPTZ      NOT NULL DEFAULT (NOW()),
+    "UpdatedAt"   TIMESTAMPTZ,
     CONSTRAINT "PK_Products" PRIMARY KEY ("Id"),
     CONSTRAINT "CK_Products_Price" CHECK ("Price" > 0),
     CONSTRAINT "CK_Products_Stock" CHECK ("Stock" >= 0)
@@ -40,7 +40,7 @@ CREATE INDEX IF NOT EXISTS "IX_Products_Category" ON "Products" ("Category");
 -- Transactions (TransactionService)
 CREATE TABLE IF NOT EXISTS "Transactions" (
     "Id"         INT GENERATED ALWAYS AS IDENTITY,
-    "Date"       TIMESTAMP(0)   NOT NULL,
+    "Date"       TIMESTAMPTZ(0)   NOT NULL,
     "Type"       VARCHAR(10)    NOT NULL,
     "ProductId"  INT            NOT NULL,  -- referencia lógica a Products.Id (otro microservicio)
     "Quantity"   INT            NOT NULL,
@@ -79,13 +79,13 @@ BEGIN
     -- (el stock de Products ya es el resultado de estos movimientos).
     IF NOT EXISTS (SELECT 1 FROM "Transactions") THEN
         INSERT INTO "Transactions" ("Date", "Type", "ProductId", "Quantity", "UnitPrice", "TotalPrice", "Detail") VALUES
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '20 days', 'Purchase', 1,  30, 1100.00, 33000.00, 'Compra inicial al proveedor'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '15 days', 'Sale',     1,   5, 1250.00,  6250.00, 'Venta a cliente corporativo'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '12 days', 'Purchase', 2, 200,   12.00,  2400.00, 'Compra por volumen'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '9 days',  'Sale',     2,  50,   18.50,   925.00, 'Venta mayorista'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '7 days',  'Purchase', 5,  70,   95.00,  6650.00, 'Reposición de inventario'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '3 days',  'Sale',     5,  10,  129.90,  1299.00, 'Venta en tienda'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '5 days',  'Purchase', 8, 220,   20.00,  4400.00, 'Compra de cargadores'),
-        (NOW() AT TIME ZONE 'utc' - INTERVAL '1 day',   'Sale',     8,  20,   29.90,   598.00, 'Venta online');
+        (NOW() - INTERVAL '20 days', 'Purchase', 1,  30, 1100.00, 33000.00, 'Compra inicial al proveedor'),
+        (NOW() - INTERVAL '12 days', 'Purchase', 2, 200,   12.00,  2400.00, 'Compra por volumen'),
+        (NOW() - INTERVAL '15 days', 'Sale',     1,   5, 1250.00,  6250.00, 'Venta a cliente corporativo'),
+        (NOW() - INTERVAL '9 days',  'Sale',     2,  50,   18.50,   925.00, 'Venta mayorista'),
+        (NOW() - INTERVAL '7 days',  'Purchase', 5,  70,   95.00,  6650.00, 'Reposición de inventario'),
+        (NOW() - INTERVAL '3 days',  'Sale',     5,  10,  129.90,  1299.00, 'Venta en tienda'),
+        (NOW() - INTERVAL '5 days',  'Purchase', 8, 220,   20.00,  4400.00, 'Compra de cargadores'),
+        (NOW() - INTERVAL '1 day',   'Sale',     8,  20,   29.90,   598.00, 'Venta online');
     END IF;
 END $$;
