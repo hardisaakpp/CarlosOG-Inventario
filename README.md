@@ -1,0 +1,1 @@
+Al editar un producto desde el formulario, el stock se guarda con el valor que muestra el formulario. Si otra persona registra una venta mientras el formulario está abierto, ese cambio de stock puede perderse.
