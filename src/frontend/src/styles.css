@@ -11,3 +11,10 @@
   --mat-snack-bar-supporting-text-color: #fff;
   --mat-snack-bar-button-color: #fff;
 }
+
+/* Botón de eliminar: rojo sólido para distinguirlo del resto de acciones. */
+.delete-button {
+  --mat-button-filled-container-color: var(--mat-sys-error);
+  --mat-button-filled-label-text-color: var(--mat-sys-on-error);
+  margin-left: 8px;
+}

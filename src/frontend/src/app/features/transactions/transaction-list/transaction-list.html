@@ -90,9 +90,7 @@
       <a mat-icon-button [routerLink]="['/transactions', t.id, 'edit']" title="Editar">
         <mat-icon>edit</mat-icon>
       </a>
-      <button mat-icon-button (click)="remove(t)" title="Eliminar">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <button mat-flat-button class="delete-button" (click)="remove(t)">Eliminar</button>
     </td>
   </ng-container>
 
