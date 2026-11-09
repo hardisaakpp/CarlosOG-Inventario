@@ -1,0 +1,64 @@
+<h1>{{ isEdit() ? 'Editar transacción' : 'Nueva transacción' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-form-field>
+    <mat-label>Tipo</mat-label>
+    <mat-select formControlName="type">
+      <mat-option value="Purchase">Compra</mat-option>
+      <mat-option value="Sale">Venta</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Producto</mat-label>
+    <mat-select formControlName="productId">
+      @for (p of products(); track p.id) {
+        <mat-option [value]="p.id">{{ p.name }} (stock: {{ p.stock }})</mat-option>
+      }
+    </mat-select>
+    @if (form.controls.productId.hasError('required')) {
+      <mat-error>Debe seleccionar un producto.</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" formControlName="quantity" />
+      @if (form.controls.quantity.hasError('required')) {
+        <mat-error>La cantidad es obligatoria.</mat-error>
+      } @else if (form.controls.quantity.hasError('min')) {
+        <mat-error>La cantidad debe ser mayor a 0.</mat-error>
+      } @else if (form.controls.quantity.hasError('pattern')) {
+        <mat-error>La cantidad debe ser un número entero.</mat-error>
+      } @else if (form.controls.quantity.hasError('insufficientStock')) {
+        <mat-error>Stock insuficiente: solo hay {{ availableStock() }} disponibles.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Precio unitario</mat-label>
+      <input matInput type="number" step="0.01" formControlName="unitPrice" />
+      @if (form.controls.unitPrice.hasError('min')) {
+        <mat-error>El precio debe ser mayor a 0.</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  @if (form.value.quantity && form.value.unitPrice) {
+    <p class="total">Total: <strong>{{ form.value.quantity * form.value.unitPrice | currency }}</strong></p>
+  }
+
+  <mat-form-field>
+    <mat-label>Detalle</mat-label>
+    <textarea matInput rows="3" formControlName="detail"></textarea>
+    @if (form.controls.detail.hasError('maxlength')) {
+      <mat-error>Máximo 500 caracteres.</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="buttons">
+    <a mat-button routerLink="/transactions">Cancelar</a>
+    <button mat-flat-button type="submit" [disabled]="saving()">Guardar</button>
+  </div>
+</form>

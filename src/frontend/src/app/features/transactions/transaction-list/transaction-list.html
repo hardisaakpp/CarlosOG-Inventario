@@ -1,0 +1,113 @@
+<div class="header">
+  <h1>Transacciones</h1>
+  <a mat-flat-button routerLink="/transactions/new">
+    <mat-icon>add</mat-icon> Nueva transacción
+  </a>
+</div>
+
+<form class="filters" [formGroup]="filters">
+  <mat-form-field>
+    <mat-label>Producto</mat-label>
+    <mat-select formControlName="productId">
+      <mat-option [value]="null">Todos</mat-option>
+      @for (p of products(); track p.id) {
+        <mat-option [value]="p.id">{{ p.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="small">
+    <mat-label>Tipo</mat-label>
+    <mat-select formControlName="type">
+      <mat-option value="">Todos</mat-option>
+      <mat-option value="Purchase">Compra</mat-option>
+      <mat-option value="Sale">Venta</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Rango de fechas</mat-label>
+    <mat-date-range-input [rangePicker]="picker" formGroupName="range">
+      <input matStartDate formControlName="start" placeholder="Desde" />
+      <input matEndDate formControlName="end" placeholder="Hasta" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker" />
+    <mat-date-range-picker #picker />
+  </mat-form-field>
+
+  <button mat-button type="button" (click)="clearFilters()">Limpiar</button>
+</form>
+
+@if (selectedProduct(); as product) {
+  <p class="product-info">
+    <strong>{{ product.name }}</strong> · Stock actual: <strong>{{ product.stock }}</strong>
+  </p>
+}
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<table mat-table [dataSource]="transactions()">
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef>Fecha</th>
+    <td mat-cell *matCellDef="let t">{{ t.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="product">
+    <th mat-header-cell *matHeaderCellDef>Producto</th>
+    <td mat-cell *matCellDef="let t">
+      {{ t.productName }}
+      @if (t.detail) {
+        <div class="detail">{{ t.detail }}</div>
+      }
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>Tipo</th>
+    <td mat-cell *matCellDef="let t">{{ t.type === 'Sale' ? 'Venta' : 'Compra' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+    <td mat-cell *matCellDef="let t">{{ t.quantity }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="unitPrice">
+    <th mat-header-cell *matHeaderCellDef>Precio unit.</th>
+    <td mat-cell *matCellDef="let t">{{ t.unitPrice | currency }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="totalPrice">
+    <th mat-header-cell *matHeaderCellDef>Total</th>
+    <td mat-cell *matCellDef="let t">{{ t.totalPrice | currency }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let t" class="actions">
+      <a mat-icon-button [routerLink]="['/transactions', t.id, 'edit']" title="Editar">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <button mat-icon-button (click)="remove(t)" title="Eliminar">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="empty" [attr.colspan]="columns.length">No hay transacciones para mostrar.</td>
+  </tr>
+</table>
+
+<mat-paginator
+  [length]="total()"
+  [pageIndex]="pageIndex()"
+  [pageSize]="pageSize()"
+  [pageSizeOptions]="[5, 10, 25]"
+  (page)="onPage($event)"
+/>

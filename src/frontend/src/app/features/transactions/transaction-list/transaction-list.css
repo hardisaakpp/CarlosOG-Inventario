@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filters mat-form-field {
+  width: 240px;
+}
+
+.filters mat-form-field.small {
+  width: 140px;
+}
+
+.product-info {
+  margin: 0 0 12px;
+}
+
+table {
+  width: 100%;
+}
+
+.detail {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.empty {
+  padding: 24px;
+  text-align: center;
+  opacity: 0.6;
+}
