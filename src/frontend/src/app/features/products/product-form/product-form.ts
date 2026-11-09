@@ -63,6 +63,9 @@ export class ProductForm implements OnInit {
 
     if (!this.isEdit()) return;
 
+    // Al editar, el stock es solo informativo: cambia únicamente con transacciones.
+    this.form.controls.stock.disable();
+
     this.productService.get(this.id()!).subscribe((p) => this.form.patchValue(p));
   }
 

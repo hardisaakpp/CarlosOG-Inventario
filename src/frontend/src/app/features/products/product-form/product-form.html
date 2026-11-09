@@ -65,6 +65,9 @@
       <mat-label>Stock</mat-label>
     <mat-icon matPrefix>inventory_2</mat-icon>
       <input matInput type="number" formControlName="stock" />
+      @if (isEdit()) {
+        <mat-hint>Se modifica registrando transacciones.</mat-hint>
+      }
       @if (form.controls.stock.hasError('required')) {
         <mat-error>El stock es obligatorio.</mat-error>
       } @else if (form.controls.stock.hasError('min')) {
