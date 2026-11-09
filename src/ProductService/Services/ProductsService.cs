@@ -3,6 +3,7 @@ using Inventario.Products.Data;
 using Inventario.Products.Dtos;
 using Inventario.Products.Models;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Inventario.Products.Services;
 
@@ -57,6 +58,8 @@ public class ProductsService(AppDbContext db) : IProductsService
     {
         var product = new Product { CreatedAt = DateTime.UtcNow };
         Map(r, product);
+        // El stock inicial solo se fija al crear; después cambia únicamente con transacciones.
+        product.Stock = r.Stock;
         db.Products.Add(product);
         await db.SaveChangesAsync(ct);
         return ToResponse(product);
@@ -75,10 +78,19 @@ public class ProductsService(AppDbContext db) : IProductsService
 
     public async Task<ServiceResult<bool>> DeleteAsync(int id, CancellationToken ct)
     {
-        var deleted = await db.Products.Where(p => p.Id == id).ExecuteDeleteAsync(ct);
-        return deleted == 0
-            ? ServiceResult<bool>.Fail(404, $"No existe el producto con id {id}.")
-            : new(true);
+        try
+        {
+            var deleted = await db.Products.Where(p => p.Id == id).ExecuteDeleteAsync(ct);
+            return deleted == 0
+                ? ServiceResult<bool>.Fail(404, $"No existe el producto con id {id}.")
+                : new(true);
+        }
+        catch (Exception ex) when (IsForeignKeyViolation(ex))
+        {
+            // La clave foránea Transactions.ProductId impide borrar productos con movimientos.
+            return ServiceResult<bool>.Fail(
+                409, "No se puede eliminar el producto porque tiene transacciones registradas.");
+        }
     }
 
     /// <summary>
@@ -116,6 +128,10 @@ public class ProductsService(AppDbContext db) : IProductsService
     private static ServiceResult<ProductResponse> NotFound(int id) =>
         ServiceResult<ProductResponse>.Fail(404, $"No existe el producto con id {id}.");
 
+    private static bool IsForeignKeyViolation(Exception ex) =>
+        ex is PostgresException { SqlState: PostgresErrorCodes.ForeignKeyViolation }
+        || ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.ForeignKeyViolation };
+
     private static string EscapeLike(string text) =>
         text.Replace("\\", "\\\\").Replace("%", "\\%").Replace("_", "\\_");
 
@@ -126,7 +142,6 @@ public class ProductsService(AppDbContext db) : IProductsService
         p.Category = r.Category.Trim();
         p.ImageUrl = string.IsNullOrWhiteSpace(r.ImageUrl) ? null : r.ImageUrl.Trim();
         p.Price = r.Price;
-        p.Stock = r.Stock;
     }
 
     private static ProductResponse ToResponse(Product p) =>

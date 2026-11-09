@@ -10,9 +10,9 @@
        psql -U postgres -d inventario -f script.sql
 
    Cada microservicio usa solo su tabla (ProductService -> Products,
-   TransactionService -> Transactions). No hay clave foránea entre ambas
-   para que los servicios no dependan uno del otro; TransactionService
-   valida el producto por API REST.
+   TransactionService -> Transactions) y se comunican por API REST.
+   Transactions.ProductId es clave foránea de Products.Id con ON DELETE
+   RESTRICT: la base impide borrar un producto que ya tiene transacciones.
 
    Las fechas se guardan en UTC. Los identificadores van entre comillas
    dobles, así que al consultar con psql hay que respetarlas.
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS "Transactions" (
     "Id"         INT GENERATED ALWAYS AS IDENTITY,
     "Date"       TIMESTAMPTZ(0)   NOT NULL,
     "Type"       VARCHAR(10)    NOT NULL,
-    "ProductId"  INT            NOT NULL,  -- referencia lógica a Products.Id (otro microservicio)
+    "ProductId"  INT            NOT NULL,  -- clave foránea a Products.Id (ver más abajo)
     "Quantity"   INT            NOT NULL,
     "UnitPrice"  NUMERIC(18,2)  NOT NULL,
     "TotalPrice" NUMERIC(18,2)  NOT NULL,
@@ -55,6 +55,17 @@ CREATE TABLE IF NOT EXISTS "Transactions" (
 );
 
 CREATE INDEX IF NOT EXISTS "IX_Transactions_Product_Date" ON "Transactions" ("ProductId", "Date");
+
+-- Clave foránea Transactions -> Products. Va en un bloque aparte para que también
+-- se aplique si el script se ejecuta sobre tablas que ya existían sin ella.
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'FK_Transactions_Products') THEN
+        ALTER TABLE "Transactions"
+            ADD CONSTRAINT "FK_Transactions_Products"
+            FOREIGN KEY ("ProductId") REFERENCES "Products" ("Id") ON DELETE RESTRICT;
+    END IF;
+END $$;
 
 -- Datos de ejemplo
 DO $$

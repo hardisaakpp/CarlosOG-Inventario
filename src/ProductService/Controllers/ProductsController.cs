@@ -55,7 +55,7 @@ public class ProductsController(IProductsService products) : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = created.Id }, response);
     }
 
-    /// <summary>Actualiza un producto existente.</summary>
+    /// <summary>Actualiza un producto existente. El stock no se modifica aquí: cambia solo con transacciones.</summary>
     [HttpPut("{id:int}")]
     [ProducesResponseType<ApiResponse<ProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -75,10 +75,11 @@ public class ProductsController(IProductsService products) : ControllerBase
             result.Value!));
     }
 
-    /// <summary>Elimina un producto.</summary>
+    /// <summary>Elimina un producto. Responde 409 si tiene transacciones registradas.</summary>
     [HttpDelete("{id:int}")]
     [ProducesResponseType<ApiResponse<bool>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
         var result = await products.DeleteAsync(id, ct);

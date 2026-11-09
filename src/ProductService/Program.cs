@@ -27,8 +27,6 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/openapi/v1.json", "ProductService v1"));
 }
 
-app.UseHttpsRedirection();
-
 app.UseCors();
 
 app.UseAuthorization();
