@@ -1,17 +1,26 @@
 import { Component, OnInit, computed, inject, input, numberAttribute, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
+import { finalize, startWith } from 'rxjs';
 
 import { ProductRequest } from '../../../models/product';
 import { ProductService } from '../../../services/product.service';
 
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
 })
@@ -35,7 +44,21 @@ export class ProductForm implements OnInit {
     stock: [0, [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)]],
   });
 
+  categories = signal<string[]>([]);
+
+  private categoryText = toSignal(this.form.controls.category.valueChanges.pipe(startWith('')), {
+    initialValue: '',
+  });
+
+  // Sugerencias que coinciden con lo que se va escribiendo.
+  filteredCategories = computed(() => {
+    const text = (this.categoryText() ?? '').toLowerCase();
+    return this.categories().filter((c) => c.toLowerCase().includes(text));
+  });
+
   ngOnInit() {
+    this.productService.categories().subscribe((c) => this.categories.set(c));
+
     if (!this.isEdit()) return;
 
     this.productService.get(this.id()!).subscribe((p) => this.form.patchValue(p));
@@ -48,9 +71,12 @@ export class ProductForm implements OnInit {
     }
 
     const value = this.form.getRawValue();
+    const category = value.category!.trim();
     const product: ProductRequest = {
       name: value.name!.trim(),
-      category: value.category!.trim(),
+      // Si ya existe una categoría igual (sin importar mayúsculas), se reutiliza su escritura
+      // para no crear duplicados como "audio" y "Audio".
+      category: this.categories().find((c) => c.toLowerCase() === category.toLowerCase()) ?? category,
       description: value.description?.trim() || null,
       imageUrl: value.imageUrl?.trim() || null,
       price: value.price!,

@@ -13,7 +13,13 @@
 
   <mat-form-field>
     <mat-label>Categoría</mat-label>
-    <input matInput formControlName="category" />
+    <input matInput formControlName="category" [matAutocomplete]="categoryList" />
+    <mat-autocomplete #categoryList="matAutocomplete">
+      @for (c of filteredCategories(); track c) {
+        <mat-option [value]="c">{{ c }}</mat-option>
+      }
+    </mat-autocomplete>
+    <mat-hint>Elige una existente o escribe una nueva.</mat-hint>
     @if (form.controls.category.hasError('required')) {
       <mat-error>La categoría es obligatoria.</mat-error>
     } @else if (form.controls.category.hasError('maxlength')) {
