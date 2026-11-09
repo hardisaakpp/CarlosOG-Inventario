@@ -1,24 +1,66 @@
-mat-toolbar a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: inherit;
-  text-decoration: none;
-  margin-left: 24px;
-  opacity: 0.75;
-}
+/* Barra con el color principal del tema (más profundo en modo oscuro).
+   La marca y la sección activa llevan el acento complementario del tema. */
+mat-toolbar {
+  --header-bg: light-dark(color-mix(in srgb, var(--mat-sys-primary) 78%, #12101c), var(--mat-sys-primary-container));
+  --header-fg: light-dark(var(--mat-sys-on-primary), var(--mat-sys-on-primary-container));
+  --header-accent: var(--mat-sys-tertiary-fixed-dim);
 
-mat-toolbar a.active {
-  opacity: 1;
-  font-weight: 500;
+  --mat-toolbar-container-background-color: var(--header-bg);
+  --mat-toolbar-container-text-color: var(--header-fg);
+  --mat-icon-button-icon-color: var(--header-fg);
+  padding: 0 24px;
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brand mat-icon {
+  color: var(--header-accent);
+}
+
+nav {
+  display: flex;
+  align-self: stretch;
+  margin-left: 32px;
+  flex: 1;
+}
+
+nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  color: color-mix(in srgb, var(--header-fg) 75%, transparent);
+  text-decoration: none;
+  font-size: 14px;
+  border-bottom: 3px solid transparent;
+}
+
+nav a:hover {
+  color: var(--header-fg);
+  background-color: color-mix(in srgb, var(--header-fg) 10%, transparent);
+}
+
+nav a.active {
+  color: var(--header-fg);
   font-weight: 500;
+  border-bottom-color: var(--header-accent);
+}
+
+nav mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 main {
-  max-width: 1100px;
-  margin: 24px auto;
-  padding: 0 16px;
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 24px;
 }

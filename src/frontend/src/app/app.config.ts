@@ -22,6 +22,6 @@ export const appConfig: ApplicationConfig = {
     { provide: MAT_DATE_LOCALE, useValue: 'es-EC' },
     { provide: MatPaginatorIntl, useClass: PaginatorEs },
     provideNativeDateAdapter(),
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { subscriptSizing: 'dynamic' } },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline', subscriptSizing: 'dynamic' } },
   ],
 };

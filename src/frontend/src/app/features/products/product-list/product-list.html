@@ -23,29 +23,31 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="small">
-    <mat-label>Precio mín.</mat-label>
-    <mat-icon matPrefix>attach_money</mat-icon>
-    <input matInput type="number" min="0" formControlName="minPrice" />
-  </mat-form-field>
+  <div class="range">
+    <span class="range-label"><mat-icon>attach_money</mat-icon> Precio</span>
+    <mat-form-field class="narrow">
+      <mat-label>Mín.</mat-label>
+      <input matInput type="number" min="0" formControlName="minPrice" />
+    </mat-form-field>
+    <span class="dash">–</span>
+    <mat-form-field class="narrow">
+      <mat-label>Máx.</mat-label>
+      <input matInput type="number" min="0" formControlName="maxPrice" />
+    </mat-form-field>
+  </div>
 
-  <mat-form-field class="small">
-    <mat-label>Precio máx.</mat-label>
-    <mat-icon matPrefix>attach_money</mat-icon>
-    <input matInput type="number" min="0" formControlName="maxPrice" />
-  </mat-form-field>
-
-  <mat-form-field class="small">
-    <mat-label>Stock mín.</mat-label>
-    <mat-icon matPrefix>inventory_2</mat-icon>
-    <input matInput type="number" min="0" formControlName="minStock" />
-  </mat-form-field>
-
-  <mat-form-field class="small">
-    <mat-label>Stock máx.</mat-label>
-    <mat-icon matPrefix>inventory_2</mat-icon>
-    <input matInput type="number" min="0" formControlName="maxStock" />
-  </mat-form-field>
+  <div class="range">
+    <span class="range-label"><mat-icon>inventory_2</mat-icon> Stock</span>
+    <mat-form-field class="narrow">
+      <mat-label>Mín.</mat-label>
+      <input matInput type="number" min="0" formControlName="minStock" />
+    </mat-form-field>
+    <span class="dash">–</span>
+    <mat-form-field class="narrow">
+      <mat-label>Máx.</mat-label>
+      <input matInput type="number" min="0" formControlName="maxStock" />
+    </mat-form-field>
+  </div>
 
   <button mat-button type="button" (click)="clearFilters()">Limpiar</button>
 </form>
@@ -54,63 +56,76 @@
   <mat-progress-bar mode="indeterminate" />
 }
 
-<table mat-table [dataSource]="products()">
-  <ng-container matColumnDef="image">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let p">
-      @if (p.imageUrl) {
-        <img [src]="p.imageUrl" [alt]="p.name" />
-      }
-    </td>
-  </ng-container>
+<div class="table-wrap">
+    <table mat-table [dataSource]="products()">
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let p">
+        @if (p.imageUrl) {
+          <img [src]="p.imageUrl" [alt]="p.name" />
+        }
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nombre</th>
-    <td mat-cell *matCellDef="let p">
-      {{ p.name }}
-      @if (p.description) {
-        <div class="description">{{ p.description }}</div>
-      }
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let p">
+        {{ p.name }}
+        @if (p.description) {
+          <div class="description">{{ p.description }}</div>
+        }
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="category">
-    <th mat-header-cell *matHeaderCellDef>Categoría</th>
-    <td mat-cell *matCellDef="let p">{{ p.category }}</td>
-  </ng-container>
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Categoría</th>
+      <td mat-cell *matCellDef="let p" class="muted">{{ p.category }}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef>Precio</th>
-    <td mat-cell *matCellDef="let p">{{ p.price | currency }}</td>
-  </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef class="num">Precio</th>
+      <td mat-cell *matCellDef="let p" class="num">{{ p.price | currency }}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="stock">
-    <th mat-header-cell *matHeaderCellDef>Stock</th>
-    <td mat-cell *matCellDef="let p">{{ p.stock }}</td>
-  </ng-container>
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef>Stock</th>
+      <td mat-cell *matCellDef="let p">
+        <span
+          class="stock"
+          [class.low]="p.stock > 0 && p.stock <= 10"
+          [class.out]="p.stock === 0"
+          [title]="p.stock === 0 ? 'Agotado' : p.stock <= 10 ? 'Stock bajo' : 'Stock disponible'"
+        >
+          {{ p.stock }}
+        </span>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let p" class="actions">
-      <a mat-icon-button [routerLink]="['/products', p.id, 'edit']" title="Editar">
-        <mat-icon>edit</mat-icon>
-      </a>
-      <button mat-flat-button class="delete-button" (click)="remove(p)">Eliminar</button>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let p" class="actions">
+        <a mat-icon-button class="edit-button" [routerLink]="['/products', p.id, 'edit']" title="Editar producto" aria-label="Editar producto">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <button mat-icon-button class="delete-button" (click)="remove(p)" title="Eliminar producto" aria-label="Eliminar producto">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
 
-  <tr class="mat-row" *matNoDataRow>
-    <td class="empty" [attr.colspan]="columns.length">No hay productos para mostrar.</td>
-  </tr>
-</table>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="empty" [attr.colspan]="columns.length">No hay productos para mostrar.</td>
+    </tr>
+  </table>
 
-<mat-paginator
-  [length]="total()"
-  [pageIndex]="pageIndex()"
-  [pageSize]="pageSize()"
-  [pageSizeOptions]="[5, 10, 25]"
-  (page)="onPage($event)"
-/>
+  <mat-paginator
+    [length]="total()"
+    [pageIndex]="pageIndex()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[5, 10, 25]"
+    (page)="onPage($event)"
+  />
+</div>

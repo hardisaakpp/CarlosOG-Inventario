@@ -1,7 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* ---------- Paleta ----------
+   "Verde azulado profundo + coral": turquesa oscuro como color principal y coral como acento,
+   sobre neutros fríos. Parte del tema de material-theme.scss (cian y naranja de Material);
+   aquí se afinan los tonos. Todo lo demás se deriva de estos tokens. */
+html {
+  --mat-sys-primary: light-dark(#087f7c, #5fd6d2);
+  --mat-sys-on-primary: light-dark(#ffffff, #00302e);
+  --mat-sys-primary-container: light-dark(#cdeeed, #0f4f4d);
+  --mat-sys-on-primary-container: light-dark(#05302f, #cdeeed);
+  --mat-sys-tertiary-fixed-dim: #ff9a85;
+  --mat-sys-surface: light-dark(#f6fafa, #0f1515);
+  --mat-sys-surface-container: light-dark(#e4eeee, #1a2222);
+  --mat-sys-outline-variant: light-dark(#c9d8d8, #324242);
+}
+
 .snack-success {
-  --mat-snack-bar-container-color: #2e7d32;
+  --mat-snack-bar-container-color: #1f7a58;
   --mat-snack-bar-supporting-text-color: #fff;
   --mat-snack-bar-button-color: #fff;
 }
@@ -12,11 +27,29 @@
   --mat-snack-bar-button-color: #fff;
 }
 
-/* Botón de eliminar: rojo sólido para distinguirlo del resto de acciones. */
+/* Acciones de las filas: editar en el color principal y eliminar en rojo,
+   cada uno con un halo suave del mismo color al pasar el mouse. */
+.edit-button {
+  --mat-icon-button-icon-color: var(--mat-sys-primary);
+  --mat-icon-button-state-layer-color: var(--mat-sys-primary);
+}
+
 .delete-button {
-  --mat-button-filled-container-color: var(--mat-sys-error);
-  --mat-button-filled-label-text-color: var(--mat-sys-on-error);
-  margin-left: 8px;
+  --mat-icon-button-icon-color: var(--mat-sys-error);
+  --mat-icon-button-state-layer-color: var(--mat-sys-error);
+}
+
+.edit-button,
+.delete-button {
+  transition: background-color 150ms ease;
+}
+
+.edit-button:hover {
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+}
+
+.delete-button:hover {
+  background-color: color-mix(in srgb, var(--mat-sys-error) 12%, transparent);
 }
 
 /* Guardar deshabilitado: cursor de "prohibido". Material desactiva pointer-events
@@ -24,4 +57,119 @@
 button[type='submit']:disabled {
   cursor: not-allowed !important;
   pointer-events: auto !important;
+}
+
+/* ---------- Diseño general ---------- */
+
+h1 {
+  font: var(--mat-sys-headline-medium);
+  margin: 0 0 24px;
+}
+
+/* Tablas: sin recuadro, solo líneas finas, cabecera discreta y resalte al pasar el mouse. */
+.mat-mdc-table {
+  --mat-table-background-color: transparent;
+  --mat-table-row-item-outline-color: var(--mat-sys-outline-variant);
+  --mat-table-row-item-container-height: 64px;
+  --mat-table-header-container-height: 48px;
+}
+
+/* Marco fino con esquinas redondeadas que envuelve la tabla y su paginador. */
+.table-wrap {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.table-wrap .mat-mdc-header-row {
+  background-color: var(--mat-sys-surface-container);
+}
+
+.table-wrap .mat-mdc-row:last-child .mat-mdc-cell {
+  border-bottom-width: 0;
+}
+
+.table-wrap mat-paginator {
+  --mat-paginator-container-background-color: transparent;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+/* Cifras (precios, cantidades, totales) alineadas a la derecha. */
+.mat-mdc-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mat-mdc-header-cell {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.mat-mdc-row:hover {
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
+}
+
+.muted {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* Stock: punto de color junto al número (verde disponible, ámbar bajo, rojo agotado). */
+.stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stock::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: light-dark(#2a8f6a, #6ddbb0);
+}
+
+.stock.low::before {
+  background: light-dark(#b7791f, #f2c46d);
+}
+
+.stock.out::before {
+  background: var(--mat-sys-error);
+}
+
+/* ---------- Filtros de las listas ---------- */
+
+.filters mat-form-field {
+  --mat-form-field-container-height: 44px;
+  --mat-form-field-container-vertical-padding: 10px;
+}
+
+/* Sin las flechitas de subir/bajar, que tapan la etiqueta al pasar el mouse. */
+.filters input[type='number']::-webkit-inner-spin-button,
+.filters input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.filters input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ---------- Transición suave al cambiar de modo claro/oscuro ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition:
+      background-color 250ms ease,
+      color 250ms ease,
+      border-color 250ms ease,
+      fill 250ms ease !important;
+  }
 }

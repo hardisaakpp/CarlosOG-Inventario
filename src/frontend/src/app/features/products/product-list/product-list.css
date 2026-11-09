@@ -2,6 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
 }
 
 .filters {
@@ -16,8 +21,32 @@
   width: 200px;
 }
 
-.filters mat-form-field.small {
-  width: 120px;
+.filters mat-form-field.narrow {
+  width: 104px;
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.range-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.range-label mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.dash {
+  color: var(--mat-sys-on-surface-variant);
 }
 
 table {
@@ -28,7 +57,7 @@ img {
   width: 48px;
   height: 48px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
   display: block;
 }
 
@@ -40,6 +69,8 @@ img {
 .actions {
   text-align: right;
   white-space: nowrap;
+  /* Material recorta las celdas con "…"; en Firefox eso reemplazaba el botón de eliminar. */
+  text-overflow: clip;
 }
 
 .empty {

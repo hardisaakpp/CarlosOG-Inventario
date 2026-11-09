@@ -1,7 +1,20 @@
-<mat-toolbar color="primary">
-  <span class="brand">Inventario</span>
-  <a routerLink="/products" routerLinkActive="active"><mat-icon>inventory_2</mat-icon> Productos</a>
-  <a routerLink="/transactions" routerLinkActive="active"><mat-icon>swap_horiz</mat-icon> Transacciones</a>
+<mat-toolbar>
+  <span class="brand"><mat-icon>warehouse</mat-icon> Inventario</span>
+
+  <nav>
+    <a routerLink="/products" routerLinkActive="active"><mat-icon>inventory_2</mat-icon> Productos</a>
+    <a routerLink="/transactions" routerLinkActive="active"><mat-icon>swap_horiz</mat-icon> Transacciones</a>
+  </nav>
+
+  <button
+    mat-icon-button
+    class="theme-toggle"
+    (click)="theme.toggle()"
+    [title]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+    aria-label="Cambiar entre modo claro y oscuro"
+  >
+    <mat-icon>{{ theme.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
 </mat-toolbar>
 
 <main>

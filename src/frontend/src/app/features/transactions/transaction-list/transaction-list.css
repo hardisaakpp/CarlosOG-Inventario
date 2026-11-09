@@ -2,6 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
 }
 
 .filters {
@@ -36,6 +41,8 @@ table {
 .actions {
   text-align: right;
   white-space: nowrap;
+  /* Material recorta las celdas con "…"; en Firefox eso reemplazaba el botón de eliminar. */
+  text-overflow: clip;
 }
 
 .empty {
@@ -54,4 +61,12 @@ table {
   font-size: 18px;
   width: 18px;
   height: 18px;
+}
+
+.type.purchase mat-icon {
+  color: var(--mat-sys-primary);
+}
+
+.type.sale mat-icon {
+  color: light-dark(#c4553f, #ff9a85);
 }
