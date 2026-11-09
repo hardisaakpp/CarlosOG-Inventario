@@ -37,7 +37,32 @@ Aplicación web para gestionar **productos** y **transacciones de inventario** (
 | [Node.js](https://nodejs.org/) | 20.19+, 22.12+ o 24+ (incluye npm) |
 | [PostgreSQL](https://www.postgresql.org/download/) | 12 o superior (probado con 17) |
 
-Opcional: Docker, si prefieres levantar PostgreSQL en un contenedor.
+Con Docker no necesitas instalar nada de lo anterior: solo [Docker](https://docs.docker.com/get-docker/) con Docker Compose.
+
+## Ejecución con Docker (opción rápida)
+
+Levanta PostgreSQL (con `script.sql` ya aplicado), los dos microservicios y el frontend con un solo comando, desde la raíz del repositorio:
+
+```bash
+docker compose up -d --build
+```
+
+| Servicio | URL |
+|---|---|
+| Frontend | http://localhost:4200 |
+| ProductService (Swagger) | http://localhost:5079/swagger |
+| TransactionService (Swagger) | http://localhost:5103/swagger |
+| PostgreSQL | `localhost:5433` · base `inventario` · usuario `postgres` · contraseña `inventario` |
+
+Notas:
+
+- La primera vez tarda unos minutos porque descarga imágenes y compila.
+- Puertos libres: 4200, 5079 y 5103. Si ya tienes los servicios en marcha de forma manual (secciones siguientes), deténlos antes.
+- La contraseña de la base es `inventario` por defecto. Para cambiarla, copia `.env.example` como `.env` y edita `POSTGRES_PASSWORD`.
+- `script.sql` solo se ejecuta cuando la base está vacía. Para reiniciar los datos de ejemplo: `docker compose down -v` y luego `docker compose up -d --build`.
+- Para detener todo: `docker compose down`.
+
+Las secciones siguientes explican cómo ejecutar el proyecto sin Docker.
 
 ## Base de datos
 
