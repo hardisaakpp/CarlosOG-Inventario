@@ -61,18 +61,18 @@ DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM "Products") THEN
         INSERT INTO "Products" ("Name", "Description", "Category", "ImageUrl", "Price", "Stock") VALUES
-        ('Laptop Pro 14',         'Portátil 14" 16GB RAM 512GB SSD',     'Computación', 'https://picsum.photos/seed/laptop/300/200',   1250.00, 25),
-        ('Mouse Inalámbrico',     'Mouse ergonómico 2.4GHz',             'Accesorios',  'https://picsum.photos/seed/mouse/300/200',      18.50, 150),
-        ('Teclado Mecánico',      'Teclado mecánico retroiluminado',     'Accesorios',  'https://picsum.photos/seed/keyboard/300/200',   65.00, 80),
-        ('Monitor 27" 4K',        'Monitor IPS 27 pulgadas 4K',          'Computación', 'https://picsum.photos/seed/monitor/300/200',   389.99, 40),
-        ('Auriculares Bluetooth', 'Cancelación de ruido activa',         'Audio',       'https://picsum.photos/seed/headset/300/200',   129.90, 60),
-        ('Parlante Portátil',     'Resistente al agua, 12h de batería',  'Audio',       'https://picsum.photos/seed/speaker/300/200',    49.99, 100),
-        ('Smartphone X12',        'Pantalla AMOLED 6.5", 128GB',         'Telefonía',   'https://picsum.photos/seed/phone/300/200',     599.00, 35),
-        ('Cargador USB-C 65W',    'Carga rápida GaN',                    'Accesorios',  'https://picsum.photos/seed/charger/300/200',    29.90, 200),
-        ('Tablet 10"',            'Tablet 10 pulgadas 64GB',             'Telefonía',   'https://picsum.photos/seed/tablet/300/200',    279.00, 30),
-        ('Webcam Full HD',        'Webcam 1080p con micrófono',          'Computación', 'https://picsum.photos/seed/webcam/300/200',     45.00, 70),
-        ('Disco SSD 1TB',         'SSD NVMe 1TB',                        'Computación', 'https://picsum.photos/seed/ssd/300/200',        89.00, 90),
-        ('Hub USB 7 puertos',     'Hub USB 3.0 alimentado',              'Accesorios',  'https://picsum.photos/seed/hub/300/200',        22.00, 0);
+        ('Laptop Pro 14',         'Portátil 14" 16GB RAM 512GB SSD',     'Computación', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Schenker_VIA14_Laptop_asv2021-01.jpg/330px-Schenker_VIA14_Laptop_asv2021-01.jpg',   1250.00, 25),
+        ('Mouse Inalámbrico',     'Mouse ergonómico 2.4GHz',             'Accesorios',  'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/A_black_wireless_computer_mouse.jpg/330px-A_black_wireless_computer_mouse.jpg',      18.50, 150),
+        ('Teclado Mecánico',      'Teclado mecánico retroiluminado',     'Accesorios',  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Mechanical_Keyboard.jpg/330px-Mechanical_Keyboard.jpg',   65.00, 80),
+        ('Monitor 27" 4K',        'Monitor IPS 27 pulgadas 4K',          'Computación', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Computer_monitor_samsung.jpg/330px-Computer_monitor_samsung.jpg',   389.99, 40),
+        ('Auriculares Bluetooth', 'Cancelación de ruido activa',         'Audio',       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Sony-WH-1000XM3-kabellose-Bluetooth-Noise-Cancelling-Kopfhoerer.5.jpg/330px-Sony-WH-1000XM3-kabellose-Bluetooth-Noise-Cancelling-Kopfhoerer.5.jpg',   129.90, 60),
+        ('Parlante Portátil',     'Resistente al agua, 12h de batería',  'Audio',       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/JBL_Pulse_5_Portable_Bluetooth_Speaker.jpg/330px-JBL_Pulse_5_Portable_Bluetooth_Speaker.jpg',    49.99, 100),
+        ('Smartphone X12',        'Pantalla AMOLED 6.5", 128GB',         'Telefonía',   'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Nexus_4-2249.jpg/330px-Nexus_4-2249.jpg',     599.00, 35),
+        ('Cargador USB-C 65W',    'Carga rápida GaN',                    'Accesorios',  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Silicon_vs_GaN_30W_USB-C_chargers.jpg/330px-Silicon_vs_GaN_30W_USB-C_chargers.jpg',    29.90, 200),
+        ('Tablet 10"',            'Tablet 10 pulgadas 64GB',             'Telefonía',   'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Tablet_computer.jpg/330px-Tablet_computer.jpg',    279.00, 30),
+        ('Webcam Full HD',        'Webcam 1080p con micrófono',          'Computación', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Webcam_%28Logitech_c922%29.jpg/330px-Webcam_%28Logitech_c922%29.jpg',     45.00, 70),
+        ('Disco SSD 1TB',         'SSD NVMe 1TB',                        'Computación', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/2023_Dysk_SSD_Patriot_P210_1TB.jpg/330px-2023_Dysk_SSD_Patriot_P210_1TB.jpg',        89.00, 90),
+        ('Hub USB 7 puertos',     'Hub USB 3.0 alimentado',              'Accesorios',  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/USB_hub_1_2019-02-16.jpg/330px-USB_hub_1_2019-02-16.jpg',        22.00, 0);
     END IF;
 
     -- Estas transacciones cuadran con el stock inicial de arriba
