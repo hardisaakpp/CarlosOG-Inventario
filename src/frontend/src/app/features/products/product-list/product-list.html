@@ -8,11 +8,13 @@
 <form class="filters" [formGroup]="filters">
   <mat-form-field>
     <mat-label>Nombre</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
     <input matInput formControlName="name" />
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Categoría</mat-label>
+    <mat-icon matPrefix>category</mat-icon>
     <mat-select formControlName="category">
       <mat-option value="">Todas</mat-option>
       @for (c of categories(); track c) {
@@ -23,21 +25,25 @@
 
   <mat-form-field class="small">
     <mat-label>Precio mín.</mat-label>
+    <mat-icon matPrefix>attach_money</mat-icon>
     <input matInput type="number" min="0" formControlName="minPrice" />
   </mat-form-field>
 
   <mat-form-field class="small">
     <mat-label>Precio máx.</mat-label>
+    <mat-icon matPrefix>attach_money</mat-icon>
     <input matInput type="number" min="0" formControlName="maxPrice" />
   </mat-form-field>
 
   <mat-form-field class="small">
     <mat-label>Stock mín.</mat-label>
+    <mat-icon matPrefix>inventory_2</mat-icon>
     <input matInput type="number" min="0" formControlName="minStock" />
   </mat-form-field>
 
   <mat-form-field class="small">
     <mat-label>Stock máx.</mat-label>
+    <mat-icon matPrefix>inventory_2</mat-icon>
     <input matInput type="number" min="0" formControlName="maxStock" />
   </mat-form-field>
 

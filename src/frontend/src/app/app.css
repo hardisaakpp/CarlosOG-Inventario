@@ -1,4 +1,7 @@
 mat-toolbar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: inherit;
   text-decoration: none;
   margin-left: 24px;

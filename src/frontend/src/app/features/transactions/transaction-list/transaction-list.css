@@ -9,6 +9,7 @@
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .filters mat-form-field {
@@ -41,4 +42,16 @@ table {
   padding: 24px;
   text-align: center;
   opacity: 0.6;
+}
+
+.type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.type mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }

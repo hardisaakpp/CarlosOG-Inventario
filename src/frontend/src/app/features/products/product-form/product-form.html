@@ -3,6 +3,7 @@
 <form [formGroup]="form" (ngSubmit)="save()">
   <mat-form-field>
     <mat-label>Nombre</mat-label>
+    <mat-icon matPrefix>label</mat-icon>
     <input matInput formControlName="name" />
     @if (form.controls.name.hasError('required')) {
       <mat-error>El nombre es obligatorio.</mat-error>
@@ -13,6 +14,7 @@
 
   <mat-form-field>
     <mat-label>Categoría</mat-label>
+    <mat-icon matPrefix>category</mat-icon>
     <input matInput formControlName="category" [matAutocomplete]="categoryList" />
     <mat-autocomplete #categoryList="matAutocomplete">
       @for (c of filteredCategories(); track c) {
@@ -29,6 +31,7 @@
 
   <mat-form-field>
     <mat-label>Descripción</mat-label>
+    <mat-icon matPrefix>notes</mat-icon>
     <textarea matInput rows="3" formControlName="description"></textarea>
     @if (form.controls.description.hasError('maxlength')) {
       <mat-error>Máximo 500 caracteres.</mat-error>
@@ -37,6 +40,7 @@
 
   <mat-form-field>
     <mat-label>URL de la imagen</mat-label>
+    <mat-icon matPrefix>image</mat-icon>
     <input matInput formControlName="imageUrl" placeholder="https://..." />
     @if (form.controls.imageUrl.hasError('pattern')) {
       <mat-error>Debe comenzar con http:// o https://</mat-error>
@@ -48,6 +52,7 @@
   <div class="row">
     <mat-form-field>
       <mat-label>Precio</mat-label>
+    <mat-icon matPrefix>attach_money</mat-icon>
       <input matInput type="number" step="0.01" formControlName="price" />
       @if (form.controls.price.hasError('required')) {
         <mat-error>El precio es obligatorio.</mat-error>
@@ -58,6 +63,7 @@
 
     <mat-form-field>
       <mat-label>Stock</mat-label>
+    <mat-icon matPrefix>inventory_2</mat-icon>
       <input matInput type="number" formControlName="stock" />
       @if (form.controls.stock.hasError('required')) {
         <mat-error>El stock es obligatorio.</mat-error>
@@ -71,6 +77,6 @@
 
   <div class="buttons">
     <a mat-button routerLink="/products">Cancelar</a>
-    <button mat-flat-button type="submit" [disabled]="saving()">Guardar</button>
+    <button mat-flat-button type="submit" [disabled]="form.invalid || saving()">Guardar</button>
   </div>
 </form>

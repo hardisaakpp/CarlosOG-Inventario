@@ -18,3 +18,10 @@
   --mat-button-filled-label-text-color: var(--mat-sys-on-error);
   margin-left: 8px;
 }
+
+/* Guardar deshabilitado: cursor de "prohibido". Material desactiva pointer-events
+   en los botones deshabilitados, por eso se reactivan para que el cursor se aplique. */
+button[type='submit']:disabled {
+  cursor: not-allowed !important;
+  pointer-events: auto !important;
+}
