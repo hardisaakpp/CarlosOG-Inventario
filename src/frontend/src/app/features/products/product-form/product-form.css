@@ -1,0 +1,20 @@
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.row mat-form-field {
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

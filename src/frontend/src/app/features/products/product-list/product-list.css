@@ -1,0 +1,48 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filters mat-form-field {
+  width: 200px;
+}
+
+.filters mat-form-field.small {
+  width: 120px;
+}
+
+table {
+  width: 100%;
+}
+
+img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.description {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.empty {
+  padding: 24px;
+  text-align: center;
+  opacity: 0.6;
+}
