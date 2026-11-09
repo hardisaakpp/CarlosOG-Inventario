@@ -2,8 +2,6 @@
 
 Aplicación web para controlar el inventario de una empresa. Permite registrar productos, registrar las compras y ventas que modifican su stock y consultar el historial de movimientos de cada producto.
 
-En pocas palabras:
-
 - Cada **compra** suma unidades al stock del producto y cada **venta** las descuenta.
 - El sistema **no permite vender más unidades de las disponibles** y lo informa con un mensaje claro.
 - Toda la información queda guardada en una base de datos, y las listas se pueden filtrar y paginar.
@@ -13,7 +11,7 @@ Tecnologías utilizadas:
 - **Backend:** dos microservicios en .NET 10 (ASP.NET Core Web API) que se comunican de forma síncrona por REST.
 - **Frontend:** Angular 21 con Angular Material.
 - **Base de datos:** PostgreSQL.
-- **Despliegue local:** Docker Compose (opcional).
+- **Despliegue local:** Docker Compose.
 
 ## Estructura del repositorio
 
@@ -55,7 +53,7 @@ Tecnologías utilizadas:
 - **Una sola base de datos con clave foránea.** Los dos servicios usan la base `inventario`, cada uno con su tabla. La relación `Transactions.ProductId → Products.Id` se garantiza con una clave foránea (`ON DELETE RESTRICT`), por lo que la base de datos impide eliminar un producto que ya tiene movimientos.
 - **El stock solo cambia mediante transacciones.** Al editar un producto no se modifica su stock. Así se evita que una edición pise el stock actualizado por una venta que se registró mientras tanto.
 - **Ajuste de stock atómico.** La condición `stock + ajuste >= 0` se evalúa dentro de la misma sentencia `UPDATE`, de modo que dos ventas simultáneas no pueden dejar el stock en negativo.
-- **Interfaz en español**, con formato de fechas y moneda de Ecuador, y modo claro y oscuro (por defecto sigue el tema del sistema operativo).
+- **Interfaz**, con formato de fechas y moneda de Ecuador, y modo claro y oscuro (por defecto sigue el tema del sistema operativo).
 
 ## Requisitos
 
