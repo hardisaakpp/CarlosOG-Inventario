@@ -1,0 +1,58 @@
+# Levanta todo el sistema: PostgreSQL, los dos microservicios y el frontend.
+#   docker compose up -d --build
+# Variables opcionales (ver .env.example): POSTGRES_PASSWORD, DB_PORT, PRODUCT_PORT, TRANSACTION_PORT, FRONTEND_PORT.
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: inventario
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-inventario}
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      # Se ejecuta solo la primera vez, cuando el volumen está vacío.
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql:ro
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d inventario"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  product-service:
+    build: ./src/ProductService
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__inventario: Host=db;Port=5432;Database=inventario;Username=postgres;Password=${POSTGRES_PASSWORD:-inventario}
+    ports:
+      - "${PRODUCT_PORT:-5079}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  transaction-service:
+    build: ./src/TransactionService
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__inventario: Host=db;Port=5432;Database=inventario;Username=postgres;Password=${POSTGRES_PASSWORD:-inventario}
+      Services__ProductService__BaseUrl: http://product-service:8080
+    ports:
+      - "${TRANSACTION_PORT:-5103}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      product-service:
+        condition: service_started
+
+  frontend:
+    build: ./src/frontend
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+    depends_on:
+      - product-service
+      - transaction-service
+
+volumes:
+  db_data:
