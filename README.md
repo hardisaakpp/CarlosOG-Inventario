@@ -244,24 +244,3 @@ Transacción existente con sus datos cargados y el total calculado automáticame
 Listado de productos filtrado por la categoría "Accesorios". Los resultados se actualizan al cambiar cualquiera de los filtros. En la parte inferior de la tabla se ve el paginador, con la cantidad de elementos por página y el rango mostrado. El producto sin unidades disponibles se marca con el indicador rojo.
 
 ![Filtros dinámicos](capturas/filtros.png)
-
-## Créditos de las imágenes
-
-Las imágenes de los productos de ejemplo son referenciales y se cargan desde [Wikimedia Commons](https://commons.wikimedia.org/). Los autores y las condiciones de cada licencia están en la página de cada archivo.
-
-| Producto | Archivo | Licencia |
-|---|---|---|
-| Laptop Pro 14 | [Schenker VIA14 Laptop](https://commons.wikimedia.org/wiki/File:Schenker_VIA14_Laptop_asv2021-01.jpg) | Free Art License |
-| Mouse Inalámbrico | [A black wireless computer mouse](https://commons.wikimedia.org/wiki/File:A_black_wireless_computer_mouse.jpg) | CC BY-SA 4.0 |
-| Teclado Mecánico | [Mechanical Keyboard](https://commons.wikimedia.org/wiki/File:Mechanical_Keyboard.jpg) | CC BY-SA 4.0 |
-| Monitor 27" 4K | [Computer monitor samsung](https://commons.wikimedia.org/wiki/File:Computer_monitor_samsung.jpg) | Dominio público |
-| Auriculares Bluetooth | [Sony WH-1000XM3](https://commons.wikimedia.org/wiki/File:Sony-WH-1000XM3-kabellose-Bluetooth-Noise-Cancelling-Kopfhoerer.5.jpg) | CC BY 4.0 |
-| Parlante Portátil | [JBL Pulse 5 Portable Bluetooth Speaker](https://commons.wikimedia.org/wiki/File:JBL_Pulse_5_Portable_Bluetooth_Speaker.jpg) | CC BY-SA 4.0 |
-| Smartphone X12 | [Nexus 4](https://commons.wikimedia.org/wiki/File:Nexus_4-2249.jpg) | CC BY-SA 4.0 |
-| Cargador USB-C 65W | [Silicon vs GaN 30W USB-C chargers](https://commons.wikimedia.org/wiki/File:Silicon_vs_GaN_30W_USB-C_chargers.jpg) | CC BY 4.0 |
-| Tablet 10" | [Tablet computer](https://commons.wikimedia.org/wiki/File:Tablet_computer.jpg) | CC BY-SA 4.0 |
-| Webcam Full HD | [Webcam (Logitech c922)](https://commons.wikimedia.org/wiki/File:Webcam_%28Logitech_c922%29.jpg) | CC0 |
-| Disco SSD 1TB | [Dysk SSD Patriot P210 1TB](https://commons.wikimedia.org/wiki/File:2023_Dysk_SSD_Patriot_P210_1TB.jpg) | CC BY-SA 4.0 |
-| Hub USB 7 puertos | [USB hub](https://commons.wikimedia.org/wiki/File:USB_hub_1_2019-02-16.jpg) | CC BY-SA 4.0 |
-
-La imagen del iPhone 15 Pro se enlaza desde el sitio de especificaciones técnicas de Apple y es solo referencial.
