@@ -63,25 +63,33 @@ export class TransactionList implements OnInit {
     }),
   });
 
+  // Id del producto filtrado. Es una señal (el valor del formulario no lo es) para que
+  // selectedProduct se recalcule cada vez que se elige otro producto.
+  private selectedId = signal<number | null>(null);
+
   // Producto filtrado: se muestra su nombre y stock sobre la tabla (historial por producto).
-  selectedProduct = computed(() => {
-    const id = this.filters.controls.productId.value;
-    return this.products().find((p) => p.id === id);
-  });
+  selectedProduct = computed(() => this.products().find((p) => p.id === this.selectedId()));
 
   constructor() {
+    const destroyRef = inject(DestroyRef);
+
     this.filters.valueChanges
-      .pipe(debounceTime(300), takeUntilDestroyed(inject(DestroyRef)))
+      .pipe(debounceTime(300), takeUntilDestroyed(destroyRef))
       .subscribe(() => {
         this.pageIndex.set(0);
         this.load();
       });
+
+    this.filters.controls.productId.valueChanges
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe((id) => this.selectedId.set(id));
   }
 
   ngOnInit() {
     const id = this.productId();
     if (!isNaN(id!)) {
       this.filters.patchValue({ productId: id }, { emitEvent: false });
+      this.selectedId.set(id!);
     }
 
     this.productService.list({ page: 1, pageSize: 100 }).subscribe((res) => this.products.set(res.items));
