@@ -1,11 +1,13 @@
 form {
   display: flex;
   flex-direction: column;
+  gap: 16px;
   max-width: 520px;
 }
 
 .row {
   display: flex;
+  align-items: flex-start;
   gap: 16px;
 }
 
